@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chief Login</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="">Kialikmin Clan Association</a>
+      <nav class="nav"><a href="index.html">← Back to home</a></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="auth-box panel">
+      <h2>Chief &amp; Admin Login</h2>
+      <p>For the root administrator and appointed clan chiefs only.</p>
+      <div id="msg" class="msg hidden"></div>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <div class="form-actions"><button class="btn btn-navy" type="submit">Sign in</button></div>
+      </form>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase, isConfigured, showMsg } from "./js/supabase.js";
+
+    const msg = document.getElementById("msg");
+    const form = document.getElementById("login-form");
+
+    if (!isConfigured) {
+      showMsg(msg, "Supabase is not connected yet. Fill in js/config.js (see README).");
+      form.querySelector("button").disabled = true;
+    } else {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) location.href = "dashboard.html";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: form.email.value.trim(),
+        password: form.password.value,
+      });
+      if (error) return showMsg(msg, error.message);
+      location.href = "dashboard.html";
+    });
+  </script>
+</body>
+</html>

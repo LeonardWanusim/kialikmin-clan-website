@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clan Dashboard</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="">Kialikmin Clan Association</a>
+      <nav class="nav">
+        <span id="who"></span>
+        <a href="#" id="change-pw-link">Change password</a>
+        <a href="#" id="logout">Sign out</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container app-main">
+    <div id="msg" class="msg hidden"></div>
+
+    <!-- Change password (everyone) -->
+    <div id="pw-panel" class="panel hidden">
+      <h3>Change your password</h3>
+      <form id="pw-form">
+        <label for="new-pw">New password (min 8 characters)</label>
+        <input id="new-pw" type="password" minlength="8" autocomplete="new-password" required>
+        <div class="form-actions"><button class="btn btn-navy" type="submit">Update password</button></div>
+      </form>
+    </div>
+
+    <!-- ROOT ONLY -->
+    <div id="root-area" class="hidden">
+      <h2>Administration <span class="badge">Root</span></h2>
+
+      <div class="panel">
+        <h3>Places</h3>
+        <form id="place-form" class="form-grid">
+          <div><label for="place-name">Place name</label><input id="place-name" required></div>
+          <div><label for="place-district">District / LLG</label><input id="place-district"></div>
+          <div><label for="place-province">Province</label><input id="place-province"></div>
+          <div><label for="place-country">Country</label>
+            <select id="place-country"><option>Papua New Guinea</option><option>Indonesia</option></select></div>
+          <div class="form-actions"><button class="btn btn-navy" type="submit">Add place</button></div>
+        </form>
+        <div class="table-wrap"><table><thead><tr><th>Place</th><th>District / LLG</th><th>Province</th><th>Country</th><th>Members</th></tr></thead>
+          <tbody id="places-body"></tbody></table></div>
+      </div>
+
+      <div class="panel">
+        <h3>Clan Chiefs</h3>
+        <form id="chief-form" class="form-grid">
+          <div><label for="chief-name">Full name</label><input id="chief-name" required></div>
+          <div><label for="chief-email">Email (used to log in)</label><input id="chief-email" type="email" required></div>
+          <div><label for="chief-phone">Phone</label><input id="chief-phone"></div>
+          <div><label for="chief-place">Place</label><select id="chief-place" class="place-select" required></select></div>
+          <div><label for="chief-pw">Temporary password</label><input id="chief-pw" type="text" minlength="8" required></div>
+          <div class="form-actions"><button class="btn btn-navy" type="submit">Create chief</button></div>
+        </form>
+        <p class="empty">Give the chief their email and temporary password in person. They should change it after the first login.</p>
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Place</th><th>Reassign</th></tr></thead>
+          <tbody id="chiefs-body"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- CHIEF + ROOT: members -->
+    <div id="members-area" class="hidden">
+      <h2 id="members-title">Members</h2>
+
+      <div class="panel">
+        <h3 id="member-form-title">Register a member</h3>
+        <form id="member-form" class="form-grid">
+          <input type="hidden" id="member-id">
+          <div><label for="m-name">Full name</label><input id="m-name" required></div>
+          <div><label for="m-gender">Gender</label><select id="m-gender"><option value="">—</option><option>Male</option><option>Female</option></select></div>
+          <div><label for="m-dob">Date of birth</label><input id="m-dob" type="date"></div>
+          <div><label for="m-village">Village / hamlet</label><input id="m-village"></div>
+          <div><label for="m-phone">Phone</label><input id="m-phone"></div>
+          <div><label for="m-citizenship">Citizenship</label>
+            <select id="m-citizenship"><option>Papua New Guinea</option><option>West Papua (Indonesia)</option></select></div>
+          <div><label for="m-type">Membership type</label>
+            <select id="m-type"><option>Ordinary</option><option>Associate</option></select></div>
+          <div id="m-place-wrap" class="hidden"><label for="m-place">Place</label><select id="m-place" class="place-select"></select></div>
+          <div style="grid-column:1/-1"><label for="m-notes">Notes</label><textarea id="m-notes"></textarea></div>
+          <div class="form-actions">
+            <button class="btn btn-navy" type="submit" id="member-submit">Register member</button>
+            <button class="btn btn-ghost hidden" type="button" id="member-cancel">Cancel edit</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <strong id="member-count"></strong>
+          <input id="search" type="search" placeholder="Search name or village…">
+          <button class="btn btn-ghost btn-small" id="export-csv">Download CSV</button>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Gender</th><th>Village</th><th>Phone</th><th>Citizenship</th><th>Type</th><th>Place</th><th>Registered</th><th></th></tr></thead>
+          <tbody id="members-body"></tbody></table></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
